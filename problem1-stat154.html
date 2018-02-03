@@ -159,28 +159,28 @@ print(I)</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>X+W</li>
 </ol>
-<pre class="r"><code>X+W</code></pre>
+<pre class="r"><code>print(X+W)</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    3    3
 ## [2,]    7    7</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>X−I</li>
 </ol>
-<pre class="r"><code>X-I</code></pre>
+<pre class="r"><code>print(X-I)</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    1    3
 ## [2,]   -1    3</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>XY</li>
 </ol>
-<pre class="r"><code>X%*%Y</code></pre>
+<pre class="r"><code>print(X%*%Y)</code></pre>
 <pre><code>##      [,1] [,2] [,3]
 ## [1,]    7   -6   11
 ## [2,]    2   -8   11</code></pre>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>XI</li>
 </ol>
-<pre class="r"><code>X%*%I</code></pre>
+<pre class="r"><code>print(X%*%I)</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]    2    3
 ## [2,]   -1    4</code></pre>
@@ -214,14 +214,14 @@ print(I)</code></pre>
 }
 v&lt;-c(1,3,5)
 u&lt;-c(1,2,3)
-inner_product(v,u)</code></pre>
+print(inner_product(v,u))</code></pre>
 <pre><code>## [1] 22</code></pre>
 <p>6.2 Function projection() (10 pts)</p>
 <pre class="r"><code>projection&lt;-function(v,u) {
   res&lt;-inner_product(u,v)/inner_product(u,u)*u;
   return(res);
 }
-projection(v,u)</code></pre>
+print(projection(v,u))</code></pre>
 <pre><code>## [1] 1.571429 3.142857 4.714286</code></pre>
 <p>Problem 7 (10 pts)</p>
 <pre class="r"><code>x&lt;-c(1,2,3)
@@ -243,21 +243,33 @@ e3&lt;-projection(u3,u1)</code></pre>
   return(res);
 }</code></pre>
 <p>Problem 9 (10 pts)</p>
-<p>Use your function lp_norm() with the following vectors and values for p: a. zero &lt;- rep(0, 10)andp = 1 b. ones &lt;- rep(1, 5)andp = 2 c. u &lt;- rep(0.4472136, 5) and p = 2 d. u &lt;- 1:500andp = 100 e. u &lt;- 1:500 and p = “max”</p>
+<p>Use your function lp_norm() with the following vectors and values for p: a. zero &lt;- rep(0, 10)andp = 1</p>
 <pre class="r"><code>zero &lt;- rep(0, 10)
 p&lt;-1
-lp_norm(zero,p)</code></pre>
+print(lp_norm(zero,p))</code></pre>
 <pre><code>## [1] 0</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>ones &lt;- rep(1, 5)andp = 2</li>
+</ol>
 <pre class="r"><code>ones &lt;- rep(1, 5)
-lp_norm(ones,p=2)</code></pre>
+print(lp_norm(ones,p=2))</code></pre>
 <pre><code>## [1] 2.236068</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>u &lt;- rep(0.4472136, 5) and p = 2</li>
+</ol>
 <pre class="r"><code>u &lt;- rep(0.4472136, 5)
-lp_norm(u,p=2)</code></pre>
+print(lp_norm(u,p=2))</code></pre>
 <pre><code>## [1] 1</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>u &lt;- 1:500andp = 100</li>
+</ol>
 <pre class="r"><code>u &lt;- 1:500
-lp_norm(u,p=100)</code></pre>
+print(lp_norm(u,p=100))</code></pre>
 <pre><code>## [1] 508.5663</code></pre>
-<pre class="r"><code>lp_norm(u,p=&quot;max&quot;)</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>u &lt;- 1:500 and p = “max”</li>
+</ol>
+<pre class="r"><code>print(lp_norm(u,p=&quot;max&quot;))</code></pre>
 <pre><code>## [1] 500</code></pre>
 <p>Problem 10 (10 pts)</p>
 <p>Consider the eigendecomposition of a square matrix A. a. Prove that the matrix bA, where b is an arbitrary scalar, has bλ as an eigenvalue, with v as the associated eigenvector. b. Prove that the matrix A+cI, where c is an arbitrary scalar, has (λ+c) as an eigenvalue, with v as the associated eigenvector.</p>
@@ -272,7 +284,7 @@ p&lt;-ncol(X)</code></pre>
 </ol>
 <pre class="r"><code>I&lt;-diag(x=1,nrow=n,ncol=n)
 D&lt;-(1/n)*I
-sum(diag(D))</code></pre>
+print(sum(diag(D)))</code></pre>
 <pre><code>## [1] 1</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Compute the vector of column means g = XTD1 where 1 is a vector of 1’s of length n. Display (i.e. print) g.</li>
@@ -290,7 +302,7 @@ print(g)</code></pre>
 <li>Calculate the mean-centered matrix Xc = X−1gT. Display the output of colMeans(Xc).</li>
 </ol>
 <pre class="r"><code>Xc&lt;-X-(L%*%t(g))
-colMeans(Xc)</code></pre>
+print(colMeans(Xc))</code></pre>
 <pre><code>##    Population        Income    Illiteracy      Life Exp        Murder 
 ## -3.637979e-14  7.275958e-13 -5.950795e-16 -5.968559e-15  7.283063e-16</code></pre>
 <ol start="5" style="list-style-type: lower-alpha">
