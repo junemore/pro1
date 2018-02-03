@@ -196,38 +196,17 @@ print(I)</code></pre>
 <p>Determine whether the following statements are True or False.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Every orthogonal matrix is nonsingular. True</p></li>
-<li><p>Every nonsingular matrix is orthogonal.</p></li>
+<li>Every nonsingular matrix is orthogonal. True</li>
 <li><p>Every matrix of full rank is square. False</p></li>
 <li><p>Every square matrix is of full rank. False</p></li>
-<li><p>Every nonsingular matrix is of full rank.</p></li>
+<li><p>Every nonsingular matrix is of full rank. True Problem 4 (10 pts)</p></li>
 </ol>
-<p>Problem 4 (10 pts)</p>
 <p>Let X, Y, and Z be conformable. Using the properties of transposes, prove that: (XYZ)T = ZTYTXT</p>
-<pre class="r"><code>a&lt;-t(X%*%Y%*%Z)
-b&lt;-t(Z)%*%t(Y)%*%t(X)
-a==b</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,] TRUE TRUE
-## [2,] TRUE TRUE</code></pre>
+<p>prove</p>
+<p>answer see the picture.</p>
 <p>Problem 5 (10 pts)</p>
 <p>Consider the eigenvalue decomposition of a symmetric matrix A. Prove that two eigenvectors vi and vj associated with two distinct eigenvalues λi and λj of A are mutually orthogonal; that is, viTvj = 0</p>
-<pre class="r"><code>A&lt;-matrix(c(34,2,5,12),ncol=2,nrow=2)
-eigen(A)</code></pre>
-<pre><code>## eigen() decomposition
-## $values
-## [1] 34.44552 11.55448
-## 
-## $vectors
-##            [,1]       [,2]
-## [1,] 0.99605367 -0.2174321
-## [2,] 0.08875299  0.9760754</code></pre>
-<pre class="r"><code>eigen(A)$vectors[,1]</code></pre>
-<pre><code>## [1] 0.99605367 0.08875299</code></pre>
-<pre class="r"><code>eigen(A)$vectors[,2]</code></pre>
-<pre><code>## [1] -0.2174321  0.9760754</code></pre>
-<pre class="r"><code>t(eigen(A)$vectors[,1])%*%(eigen(A)$vectors[,2])</code></pre>
-<pre><code>##            [,1]
-## [1,] -0.1299444</code></pre>
+<p>answer see the picture.</p>
 <p>6.1 Function inner_product (10 pts)</p>
 <pre class="r"><code>inner_product&lt;-function(v,u) {
   res&lt;-sum(v*u);
@@ -247,7 +226,13 @@ projection(v,u)</code></pre>
 <p>Problem 7 (10 pts)</p>
 <pre class="r"><code>x&lt;-c(1,2,3)
 y&lt;-c(3,0,2)
-z&lt;-c(3,1,1)</code></pre>
+z&lt;-c(3,1,1)
+u1&lt;-x
+u2&lt;-y
+u3&lt;-z
+e1&lt;-projection(u1,u1)
+e2&lt;-projection(u2,u1)
+e3&lt;-projection(u3,u1)</code></pre>
 <p>Problem 8 (10 pts)</p>
 <pre class="r"><code>lp_norm&lt;-function(x,p=1) {
   if (p==&quot;max&quot;) {
@@ -276,6 +261,7 @@ lp_norm(u,p=100)</code></pre>
 <pre><code>## [1] 500</code></pre>
 <p>Problem 10 (10 pts)</p>
 <p>Consider the eigendecomposition of a square matrix A. a. Prove that the matrix bA, where b is an arbitrary scalar, has bλ as an eigenvalue, with v as the associated eigenvector. b. Prove that the matrix A+cI, where c is an arbitrary scalar, has (λ+c) as an eigenvalue, with v as the associated eigenvector.</p>
+<p>answer see the picture.</p>
 <p>Problem 11 (20 pts)</p>
 <p>For this problem, use the data set state.x77 that comes in R. a. Select the first five columns of state.x77 and convert them as a matrix; this will be the data matrix X. Let n be the number of rows of X, and p the number of columns of X</p>
 <pre class="r"><code>X&lt;-as.matrix(state.x77[,1:5])
@@ -291,42 +277,33 @@ sum(diag(D))</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Compute the vector of column means g = XTD1 where 1 is a vector of 1’s of length n. Display (i.e. print) g.</li>
 </ol>
-<pre class="r"><code>L&lt;-c(data=1,ncol=n)
-g&lt;-t(X)%*%D*L
-colMeans(g)</code></pre>
-<pre><code>##  [1]  753.13880  101.09724  928.99640  438.19464 1121.97960  529.52424
-##  [7] 1096.51280  136.73624 1010.28800 1006.01816 1010.82440  180.54348
-## [13] 1080.26080 1082.27552  951.56720  475.98632  770.01680  778.85504
-## [19]  757.12360  847.75688  988.63960 1843.88652  965.28760  483.84436
-## [25]  884.04640  167.99024  922.31000  141.27212  873.71000 1489.09172
-## [31]  738.88760 3637.55420  810.65760  148.47912  969.33680  560.71768
-## [37]  955.58120 2391.49772  929.71880  580.79184  850.54880  852.70444
-## [43]  900.78560  257.99960  797.64040 1017.46432 1001.39960  376.16592
-## [49]  926.46680   95.24516</code></pre>
+<pre class="r"><code>L&lt;-rep(1,nrow(X))
+g&lt;-t(X)%*%D%*%L
+print(g)</code></pre>
+<pre><code>##                 [,1]
+## Population 4246.4200
+## Income     4435.8000
+## Illiteracy    1.1700
+## Life Exp     70.8786
+## Murder        7.3780</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Calculate the mean-centered matrix Xc = X−1gT. Display the output of colMeans(Xc).</li>
 </ol>
-<pre class="r"><code>Xc&lt;-X-(L*t(g))
+<pre class="r"><code>Xc&lt;-X-(L%*%t(g))
 colMeans(Xc)</code></pre>
 <pre><code>##    Population        Income    Illiteracy      Life Exp        Murder 
-## -9.141726e+04 -9.094947e-15 -2.924124e+01  0.000000e+00 -1.998867e+02</code></pre>
+## -3.637979e-14  7.275958e-13 -5.950795e-16 -5.968559e-15  7.283063e-16</code></pre>
 <ol start="5" style="list-style-type: lower-alpha">
 <li>Compute the (population) variance-covariance matrix V = XTDX − ggT. Display the output of V.</li>
 </ol>
 <pre class="r"><code>V&lt;-t(X)%*%D%*%X-g%*%t(g)
 V</code></pre>
-<pre><code>##              Population        Income    Illiteracy      Life Exp
-## Population -737457812.2  0.000000e+00 -1.187600e+05  5.820766e-11
-## Income              0.0 -4.775811e+08  9.094947e-13 -7.606083e+06
-## Illiteracy    -118760.0  9.094947e-13 -4.532284e+01  0.000000e+00
-## Life Exp            0.0 -7.606083e+06  0.000000e+00 -1.223268e+05
-## Murder        -828556.3  0.000000e+00 -2.785258e+02  0.000000e+00
-##                  Murder
-## Population -828556.3488
-## Income           0.0000
-## Illiteracy    -278.5258
-## Life Exp         0.0000
-## Murder       -1906.8564</code></pre>
+<pre><code>##               Population      Income  Illiteracy    Life Exp      Murder
+## Population 19533050.0836 559805.1840  287.010600 -399.685612 5550.253240
+## Income       559805.1840 370021.8400 -160.428000  275.049920 -511.456400
+## Illiteracy      287.0106   -160.4280    0.364100   -0.471882    1.550140
+## Life Exp       -399.6856    275.0499   -0.471882    1.765980   -3.792091
+## Murder         5550.2532   -511.4564    1.550140   -3.792091   13.354916</code></pre>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Let D1/S be a p × p diagonal matrix with elements on the diagonal equal to 1/Sj , where Sj is the standard deviation for the j-th variable. Display only the elements in the diagonal of D1/S</li>
 </ol>
@@ -346,31 +323,31 @@ print(1/Sj)</code></pre>
 </ol>
 <pre class="r"><code>Z&lt;-Xc%*%Ds
 print(colMeans(Z))</code></pre>
-<pre><code>## [1] -2.047652e+01 -1.480129e-17 -4.797318e+01  0.000000e+00 -5.414724e+01</code></pre>
+<pre><code>## [1] -8.396062e-18  1.188147e-15 -9.803269e-16 -4.454761e-15  1.983136e-16</code></pre>
 <pre class="r"><code>apply(Z,2,var)</code></pre>
-<pre><code>## [1] 1.477470e+03 3.330882e-32 3.857653e+03 0.000000e+00 4.108436e+03</code></pre>
+<pre><code>## [1] 1 1 1 1 1</code></pre>
 <ol start="8" style="list-style-type: lower-alpha">
 <li>Compute the (population) correlation matrix R = D1/SVD1/S. Display the matrix R</li>
 </ol>
 <pre class="r"><code>R&lt;-Ds%*%V%*%Ds
 print(R)</code></pre>
-<pre><code>##           [,1]          [,2]          [,3]          [,4]       [,5]
-## [1,] -36.99927  0.000000e+00 -4.364162e+01  9.712439e-15  -50.27389
-## [2,]   0.00000 -1.264870e+03  2.428299e-15 -9.221054e+03    0.00000
-## [3,] -43.64162  2.428299e-15 -1.219895e+02  0.000000e+00 -123.78288
-## [4,]   0.00000 -9.221054e+03  0.000000e+00 -6.788314e+04    0.00000
-## [5,] -50.27389  0.000000e+00 -1.237829e+02  0.000000e+00 -139.92744</code></pre>
+<pre><code>##             [,1]       [,2]       [,3]        [,4]       [,5]
+## [1,]  0.98000000  0.2040630  0.1054699 -0.06669091  0.3367699
+## [2,]  0.20406301  0.9800000 -0.4283337  0.33345023 -0.2254761
+## [3,]  0.10546993 -0.4283337  0.9800000 -0.57670837  0.6889157
+## [4,] -0.06669091  0.3334502 -0.5767084  0.98000000 -0.7652288
+## [5,]  0.33676990 -0.2254761  0.6889157 -0.76522884  0.9800000</code></pre>
 <ol style="list-style-type: lower-roman">
 <li>Confirm that R can also be obtained as R = ZTDZ</li>
 </ol>
 <pre class="r"><code>R&lt;-t(Z)%*%D%*%Z
 print(R)</code></pre>
-<pre><code>##              [,1]         [,2]         [,3] [,4]         [,5]
-## [1,] 1.867208e+03 1.430343e-15 2.188408e+03    0 2.521610e+03
-## [2,] 1.430343e-15 3.286172e-32 5.749436e-15    0 5.365888e-15
-## [3,] 2.188408e+03 5.749436e-15 6.081926e+03    0 6.161358e+03
-## [4,] 0.000000e+00 0.000000e+00 0.000000e+00    0 0.000000e+00
-## [5,] 2.521610e+03 5.365888e-15 6.161358e+03    0 6.958191e+03</code></pre>
+<pre><code>##             [,1]       [,2]       [,3]        [,4]       [,5]
+## [1,]  0.98000000  0.2040630  0.1054699 -0.06669091  0.3367699
+## [2,]  0.20406301  0.9800000 -0.4283337  0.33345023 -0.2254761
+## [3,]  0.10546993 -0.4283337  0.9800000 -0.57670837  0.6889157
+## [4,] -0.06669091  0.3334502 -0.5767084  0.98000000 -0.7652288
+## [5,]  0.33676990 -0.2254761  0.6889157 -0.76522884  0.9800000</code></pre>
 <p>Comments and Reflections</p>
 <p>Reflect on what was hard/easy, helpful tutorials you read, etc. Here are some questions that you can start with to provide comments on your HW.</p>
 <p>• What things were hard, even though you saw them in class? eigendecomposition and singular decomposition.</p>

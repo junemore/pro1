@@ -83,7 +83,7 @@ a. Every orthogonal matrix is nonsingular.
   True
 
 b. Every nonsingular matrix is orthogonal.
-
+  True
 c. Every matrix of full rank is square.
   False
 
@@ -91,28 +91,21 @@ d. Every square matrix is of full rank.
   False
 
 e. Every nonsingular matrix is of full rank.
-
+  True
 Problem 4 (10 pts)
 
 Let X, Y, and Z be conformable. Using the properties of transposes, prove that:
 (XYZ)T = ZTYTXT
 
-```{r}
-a<-t(X%*%Y%*%Z)
-b<-t(Z)%*%t(Y)%*%t(X)
-a==b
-```
+prove
+
+answer see the picture.
 
 Problem 5 (10 pts)
 
 Consider the eigenvalue decomposition of a symmetric matrix A. Prove that two eigenvectors vi and vj associated with two distinct eigenvalues λi and λj of A are mutually orthogonal; that is, viTvj = 0
-```{r}
-A<-matrix(c(34,2,5,12),ncol=2,nrow=2)
-eigen(A)
-eigen(A)$vectors[,1]
-eigen(A)$vectors[,2]
-t(eigen(A)$vectors[,1])%*%(eigen(A)$vectors[,2])
-```
+
+answer see the picture.
 
 6.1 Function inner_product (10 pts)
 
@@ -142,6 +135,12 @@ Problem 7 (10 pts)
 x<-c(1,2,3)
 y<-c(3,0,2)
 z<-c(3,1,1)
+u1<-x
+u2<-y
+u3<-z
+e1<-projection(u1,u1)
+e2<-projection(u2,u1)
+e3<-projection(u3,u1)
 ```
 
 Problem 8 (10 pts)
@@ -196,9 +195,8 @@ Problem 10 (10 pts)
 Consider the eigendecomposition of a square matrix A.
 a. Prove that the matrix bA, where b is an arbitrary scalar, has bλ as an eigenvalue, with v as the associated eigenvector.
 b. Prove that the matrix A+cI, where c is an arbitrary scalar, has (λ+c) as an eigenvalue, with v as the associated eigenvector.
-```{r}
 
-```
+answer see the picture.
 
 Problem 11 (20 pts)
 
@@ -220,14 +218,14 @@ sum(diag(D))
 c. Compute the vector of column means g = XTD1 where 1 is a vector of 1’s of length n.
 Display (i.e. print) g.
 ```{r}
-L<-c(data=1,ncol=n)
-g<-t(X)%*%D*L
-colMeans(g)
+L<-rep(1,nrow(X))
+g<-t(X)%*%D%*%L
+print(g)
 ```
 d. Calculate the mean-centered matrix Xc = X−1gT. Display the output of
 colMeans(Xc).
 ```{r}
-Xc<-X-(L*t(g))
+Xc<-X-(L%*%t(g))
 colMeans(Xc)
 ```
 
