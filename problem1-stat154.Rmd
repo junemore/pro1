@@ -1,0 +1,288 @@
+---
+title: "homework1-stat154"
+output:
+  html_document:
+    df_print: paged
+---
+
+Problem 1 (10 pts)
+
+Create the following matrices in R (and display them).
+
+```{r}
+X<-matrix(c(2,-1,3,4),ncol=2,nrow=2)
+print(X)
+```
+
+```{r}
+Y<-matrix(c(2,1,0,-2,1,3),ncol=3,nrow=2)
+print(Y)
+```
+
+```{r}
+Z<-matrix(c(1,-1,0,1,1,2),ncol=2,nrow=3)
+print(Z)
+```
+
+```{r}
+W<-matrix(c(1,8,0,3),ncol=2,nrow=2)
+print(W)
+```
+
+```{r}
+I<-diag(x=1,nrow=2,ncol=2)
+print(I)
+```
+
+Problem 2 (10 pts)
+
+Use the matrices created in Problem 1 to perform each of the following operations in R. If the indicated operation cannot be performed, explain why.
+
+a. X+Y 
+
+  since X and Y are non-conformable arrays, so they can not do add operation.
+
+b. X+W
+
+```{r}
+X+W
+```
+
+c. X−I
+
+```{r}
+X-I
+```
+
+d. XY
+
+```{r}
+X%*%Y
+```
+
+e. XI
+
+```{r}
+X%*%I
+```
+
+f. X+(Y+Z) 
+
+  since Y and Z are non-conformable arrays, so they can not do add operation.
+
+g. Y(I+W) Error 
+
+  since I and W are non-conformable arrays, so they can not do add operation.
+
+
+Problem 3 (10 pts)
+
+Determine whether the following statements are True or False. 
+
+a. Every orthogonal matrix is nonsingular.
+  True
+
+b. Every nonsingular matrix is orthogonal.
+
+c. Every matrix of full rank is square.
+  False
+
+d. Every square matrix is of full rank.
+  False
+
+e. Every nonsingular matrix is of full rank.
+
+Problem 4 (10 pts)
+
+Let X, Y, and Z be conformable. Using the properties of transposes, prove that:
+(XYZ)T = ZTYTXT
+
+```{r}
+a<-t(X%*%Y%*%Z)
+b<-t(Z)%*%t(Y)%*%t(X)
+a==b
+```
+
+Problem 5 (10 pts)
+
+Consider the eigenvalue decomposition of a symmetric matrix A. Prove that two eigenvectors vi and vj associated with two distinct eigenvalues λi and λj of A are mutually orthogonal; that is, viTvj = 0
+```{r}
+A<-matrix(c(34,2,5,12),ncol=2,nrow=2)
+eigen(A)
+eigen(A)$vectors[,1]
+eigen(A)$vectors[,2]
+t(eigen(A)$vectors[,1])%*%(eigen(A)$vectors[,2])
+```
+
+6.1 Function inner_product (10 pts)
+
+```{r}
+inner_product<-function(v,u) {
+  res<-sum(v*u);
+  return(res);
+}
+v<-c(1,3,5)
+u<-c(1,2,3)
+inner_product(v,u)
+```
+
+6.2 Function projection() (10 pts)
+
+```{r}
+projection<-function(v,u) {
+  res<-inner_product(u,v)/inner_product(u,u)*u;
+  return(res);
+}
+projection(v,u)
+```
+
+Problem 7 (10 pts)
+
+```{r}
+x<-c(1,2,3)
+y<-c(3,0,2)
+z<-c(3,1,1)
+```
+
+Problem 8 (10 pts)
+
+```{r}
+lp_norm<-function(x,p=1) {
+  if (p=="max") {
+    res <-max(abs(x))
+    return(res)
+  }
+  res<-sum(abs(x)^p)^(1/p);
+  return(res);
+}
+```
+
+Problem 9 (10 pts)
+
+Use your function lp_norm() with the following vectors and values for p: 
+a. zero <- rep(0, 10)andp = 1
+b. ones <- rep(1, 5)andp = 2
+c. u <- rep(0.4472136, 5) and p = 2
+d. u <- 1:500andp = 100
+e. u <- 1:500 and p = "max"
+
+```{r}
+zero <- rep(0, 10)
+p<-1
+lp_norm(zero,p)
+```
+
+```{r}
+ones <- rep(1, 5)
+lp_norm(ones,p=2)
+```
+
+```{r}
+u <- rep(0.4472136, 5)
+lp_norm(u,p=2)
+```
+
+```{r}
+u <- 1:500
+lp_norm(u,p=100)
+```
+
+```{r}
+lp_norm(u,p="max")
+```
+
+Problem 10 (10 pts)
+
+Consider the eigendecomposition of a square matrix A.
+a. Prove that the matrix bA, where b is an arbitrary scalar, has bλ as an eigenvalue, with v as the associated eigenvector.
+b. Prove that the matrix A+cI, where c is an arbitrary scalar, has (λ+c) as an eigenvalue, with v as the associated eigenvector.
+```{r}
+
+```
+
+Problem 11 (20 pts)
+
+For this problem, use the data set state.x77 that comes in R.
+a. Select the first five columns of state.x77 and convert them as a matrix; this will be the data matrix X. Let n be the number of rows of X, and p the number of columns of X
+
+```{r}
+X<-as.matrix(state.x77[,1:5])
+n<-nrow(X)
+p<-ncol(X)
+```
+
+b. Create a diagonal matrix D = 1/n I where I is the n × n identity matrix. Display the output of sum(diag(D)).
+```{r}
+I<-diag(x=1,nrow=n,ncol=n)
+D<-(1/n)*I
+sum(diag(D))
+```
+c. Compute the vector of column means g = XTD1 where 1 is a vector of 1’s of length n.
+Display (i.e. print) g.
+```{r}
+L<-c(data=1,ncol=n)
+g<-t(X)%*%D*L
+colMeans(g)
+```
+d. Calculate the mean-centered matrix Xc = X−1gT. Display the output of
+colMeans(Xc).
+```{r}
+Xc<-X-(L*t(g))
+colMeans(Xc)
+```
+
+e. Compute the (population) variance-covariance matrix V = XTDX − ggT. Display the
+output of V.
+```{r}
+V<-t(X)%*%D%*%X-g%*%t(g)
+V
+```
+f. Let D1/S be a p × p diagonal matrix with elements on the diagonal equal to 1/Sj , where Sj is the standard deviation for the j-th variable. Display only the elements in the diagonal of D1/S
+```{r}
+cal_sj<-function(p,X) {
+  S<-vector(,p)
+  for (i in 1:p) {
+     S[i]<-sd(X[,i])
+  }
+  return(S)
+}
+Sj<-cal_sj(p,X) 
+Ds<-diag(x=1/Sj,nrow=p,ncol=p)
+print(1/Sj)
+```
+g. Compute the matrix of standardized data Z = XcD1/S Display the output of colMeans(Z) and apply(Z, 2, var)
+```{r}
+Z<-Xc%*%Ds
+print(colMeans(Z))
+apply(Z,2,var)
+```
+
+h. Compute the (population) correlation matrix R = D1/SVD1/S. Display the matrix R
+```{r}
+R<-Ds%*%V%*%Ds
+print(R)
+```
+i. Confirm that R can also be obtained as R = ZTDZ
+```{r}
+R<-t(Z)%*%D%*%Z
+print(R)
+```
+
+Comments and Reflections
+
+Reflect on what was hard/easy, helpful tutorials you read, etc. Here are some questions that you can start with to provide comments on your HW.
+
+• What things were hard, even though you saw them in class?
+eigendecomposition and singular decomposition.
+
+• What was easy(-ish) even though we haven’t done it in class?
+create matrix.
+
+• Did you need help to complete the assignment? If so, what kind of help? Who helped you?
+I have asked TA for questions. 
+
+• How much time did it take to complete this HW?
+almost 20 hours
+
+• What was the most time consuming part?
+I took a long time to understand the meaning of question.
