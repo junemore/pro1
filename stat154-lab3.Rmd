@@ -1,0 +1,252 @@
+---
+title: "stat154-lab3"
+output:
+  html_document:
+    df_print: paged
+---
+Lab 3: Principal Components Analysis (PCA)
+Stat 154, Spring 2018
+Introduction
+The goal of this lab is to go over the various options and steps required to perform a Principal Components Analysis (PCA). You will also learn about the functions prcomp() and princomp(), and how to use their outputs to answer questions like:
+• How many principal components to retain.
+• How to visualize the observations.
+• How to visualize the relationships among variables. • How to visualize supplementary variables.
+
+Dataset NBA Teams
+In this lab we are going to use the data set about NBA teams, containing statistics per game during the regular season 2016-2017. The corresponding CSV file is available in the data/ folder of the github repo:
+https://github.com/ucb-stat154/stat154-spring-2018/tree/master/data
+
+Your turn
+Create a new data frame dat that contains the following columns:
+• wins
+• losses
+• points
+• field_goals
+• points3
+• free_throws
+• off_rebounds • def_rebounds • assists
+• steals
+• blocks
+• personal_fouls
+
+```{r}
+repo<-'https://github.com/ucb-stat154/stat154-spring-2018/'
+csv_file<-'raw/master/data/nba-teams-2017.csv'
+url<-paste0(repo,csv_file)
+download.file(url,destfile='nba-teams-2017.csv')
+dataset<-read.csv('nba-teams-2017.csv',stringsAsFactors = FALSE)
+str(dataset, vec.len = 1)
+dat<-subset(dataset,select=c('wins','losses','points','field_goals','points3','free_throws','off_rebounds','def_rebounds','assists','steals','blocks','personal_fouls'))
+print(dat)
+```
+
+Spend some time examining things like:
+• descriptive statistics with summary().
+```{r}
+summary(dat)
+```
+• univariate plots: boxplots, histograms, density curves.
+
+```{r}
+boxplot(dat)
+hist(dat$wins)
+lines(density(dat$wins))
+hist(dat$losses)
+lines(density(dat$losses))
+hist(dat$points)
+lines(density(dat$points))
+hist(dat$field_goals)
+lines(density(dat$field_goals))
+hist(dat$points3)
+lines(density(dat$points3))
+hist(dat$free_throws)
+lines(density(dat$free_throws))
+hist(dat$off_rebounds)
+lines(density(dat$off_rebounds))
+hist(dat$def_rebounds)
+lines(density(dat$def_rebounds))
+hist(dat$assists)
+lines(density(dat$assists))
+hist(dat$steals)
+lines(density(dat$steals))
+hist(dat$blocks)
+lines(density(dat$blocks))
+hist(dat$personal_fouls)
+lines(density(dat$personal_fouls))
+```
+
+• compute the correlation matrix.
+
+```{r}
+print(cor(dat))
+```
+
+• get a scatterplot matrix with pairs()
+
+```{r}
+pairs(dat)
+```
+
+Your turn
+As we saw in lecture, the minimal output of a PCA procedure should consists of eigenvalues,
+loadings, and principal components:
+Create the following objects:
+• eigenvalues: vector of eigenvalues (i.e. λ1, λ2, . . .)
+
+```{r}
+pca_prcomp <- prcomp(dat, scale. = TRUE)
+eigenvalues<-pca_prcomp$sdev^2
+print(eigenvalues)
+```
+
+• loadings: matrix of eigenvectors (i.e. V)
+
+```{r}
+V<-pca_prcomp$rotation
+print(V)
+```
+
+• scores: matrix of principal components (i.e. Z = XV)
+
+```{r}
+Z<-pca_prcomp$x
+print(Z)
+```
+
+Note: The signs of the columns of the loadings and scores are arbitrary, and so may differ between different programs for PCA, and even between different builds of R. Look around at the output of your neighbors to see who has similar results to yours, and who has different outputs.
+Quickly inspect the objects created above:
+• How many eigenvalues are almost zero (or zero)?
+2
+• What about the loading associated to the 12th PC?
+each value in 12th PC is alomst zero.
+• What about the 12th PC score?
+12th PC score all close to zero.
+• Can you guess what’s going on with the values of the 12th dimension?
+the values of the 12th dimension all small and close to zero.
+
+Your turn
+• Compare the results of prcomp() against those of princomp() in terms of eigenvalues,loadings, and PCs
+
+```{r}
+pca_princomp <- princomp(dat, cor = TRUE)
+eigenvalues2<-pca_princomp$sdev^2
+print(eigenvalues)
+V<-pca_princomp$loadings
+print(V)
+Z<-pca_princomp$scores
+print(Z)
+```
+
+• If you carefully look at the princomp() loadings, you should notice that some values are left in blank. Why is this? Check the documentation ?princomp
+
+A : Small loadings are conventionally not printed (replaced by spaces), to draw the eye to the pattern of the larger loadings.
+
+Your turn
+What are the differences between prcomp() and princomp()? Spend some time reading the help documentation of both functions to find out the main differences between them. Are there any cases when it would be better to use one function or the other?
+
+A : princomp() use evd on x to calculate the PCs. But a preferred method of calculation is to use svd on x, as is done in prcomp(). Princomp() only handles so-called R-mode PCA, that is feature extraction of variables. If a data matrix is supplied (possibly via a formula) it is required that there are at least as many units as variables. For Q-mode PCA use prcomp() function.
+
+Your turn
+Compute a table containing the eigenvalues, the variance in terms of percentages, and the
+cumulative percentages, like the table below. Analysts typically look at a bar-chart of the
+eigenvalues (see figure below). Plot your own bar-chart.
+
+```{r}
+per=vector(,length(eigenvalues))
+cum_per=vector(,length(eigenvalues))
+per[1]=eigenvalues[1]/sum(eigenvalues)*100
+cum_per[1]=per[1]
+for (i in 2:length(eigenvalues)) {
+  per[i]=eigenvalues[i]/sum(eigenvalues)*100
+  cum_per[i]=cum_per[i-1]+per[i]
+}
+data.frame(eigenvalue=eigenvalues,percentage=per,cumulative.percentage=cum_per)
+barplot(eigenvalues)
+```
+
+• How much of the variation in the data is captured by the first PC?
+4.164615
+• How much of the variation in the data is captured by the second PC?
+2.061621
+• How much of the variation in the data is captured by the first two PCs?
+6.21
+
+Your turn
+• Calculate a matrix (ot table) of correlations between the variables and the PCs. In other words, what are the correlations of the variables with the 1st PC, with the 2nd PC, and so on.
+
+```{r}
+cc<-cor(dat,pca_prcomp$x)
+library(factoextra)
+fviz_pca_var(pca_prcomp, col.var = "black")
+```
+
+• What variables seem to be more correlated with PC1?
+
+points 
+
+• What variables seem to be more correlated with PC2?
+
+personal_fouls
+
+Your turn
+Begin with a scatterplot of the first two PCs (see figure below).
+
+```{r}
+library(plotly)
+# data frame for plot_ly()
+scores_df <- cbind.data.frame(
+pca_prcomp$x,
+team = dataset$team, stringsAsFactors = FALSE
+)
+# scatter plot
+plot_ly(data = scores_df, x = ~PC1, y = ~PC2, type = 'scatter',
+mode = 'markers',
+text = ~team,
+marker = list(size = 10))
+```
+
+• Also plot PC1 - PC3, and then plot PC2 - PC3. If you want, continue visualizing other scatterplots.
+
+```{r}
+plot_ly(data = scores_df, x = ~PC1, y = ~PC3, type = 'scatter',
+mode = 'markers',
+text = ~team,
+marker = list(size = 10))
+```
+
+```{r}
+plot_ly(data = scores_df, x = ~PC2, y = ~PC3, type = 'scatter',
+mode = 'markers',
+text = ~team,
+marker = list(size = 10))
+```
+
+• What patterns do you see?
+
+• Try adding numeric labels to the points to see which observations seem to be potential outliers.
+
+```{r}
+# 3d scatter plot
+plot_ly(data = scores_df, x = ~PC1, y = ~PC2, z = ~PC3, type = 'scatter3d',
+mode = 'markers', text = ~team)
+```
+
+
+Your turn: Graph various biplot()’s with different values of scale (e.g. 0, 0.3, 0.5, 1). How do the relative positions of the arrows change with respect to the points? Under which scale value you find it easier to read the biplot?
+
+```{r}
+biplot(pca_prcomp, scale = 0)
+```
+
+```{r}
+biplot(pca_prcomp, scale = 0.3)
+```
+
+```{r}
+biplot(pca_prcomp, scale = 0.5)
+```
+
+```{r}
+biplot(pca_prcomp, scale = 1)
+```
+
